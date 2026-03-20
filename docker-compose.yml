@@ -1,0 +1,51 @@
+services:
+  openclaw:
+    image: coollabsio/openclaw:latest
+    environment:
+      - OPENCLAW_GATEWAY_TOKEN=open-handshake-2026
+      - ANTHROPIC_API_KEY=seed-key
+      - BROWSER_CDP_URL=http://browser:9222
+      - OPENCLAW_GATEWAY_BIND=lan
+      - OPENCLAW_HTTP_ENDPOINTS_CHATCOMPLETIONS_ENABLED=true
+      - OPENCLAW_HTTP_ENDPOINTS_MODELS_ENABLED=true
+    volumes:
+      - ./data/openclaw:/data
+      - ./openclaw.json:/app/config/openclaw.json
+    depends_on:
+      - browser
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  browser:
+    image: coollabsio/openclaw-browser:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - ./data/browser-config:/config
+    shm_size: 2g
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    environment:
+      - OPENAI_API_BASE_URL=http://openclaw:8080/v1
+      - OPENAI_API_KEY=open-handshake-2026
+      - ENABLE_OPENAI_API=true
+      - WEBUI_AUTH=false
+      - WEBUI_NAME=Generic Openclaw Lab
+    depends_on:
+      openclaw:
+        condition: service_healthy
+    volumes:
+      - ./data/open-webui:/app/backend/data
+    restart: unless-stopped

@@ -1,0 +1,63 @@
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "ollama-cloud": {
+        "baseUrl": "https://ollama.com/v1",
+        "apiKey": "{YOUR-OLLAMA-CLOUD-API-KEY}",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "glm-5:cloud",
+            "name": "GLM-5 (Cloud)",
+            "contextWindow": 131072,
+            "reasoning": true
+          },
+          {
+            "id": "glm-4.7-flash:cloud",
+            "name": "GLM-4.7 Flash (Cloud)",
+            "contextWindow": 32768
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "ollama-cloud/glm-5:cloud"
+      },
+      "workspace": "/data/workspace"
+    },
+    "list": [
+      {
+        "id": "main",
+        "name": "Generic Agent",
+        "workspace": "/data/workspace"
+      }
+    ]
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "{YOUR-SHARED-SECRET-TOKEN}"
+    },
+    "controlUi": {
+      "enabled": true,
+      "allowInsecureAuth": true
+    },
+    "http": {
+      "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        },
+        "models": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}

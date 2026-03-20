@@ -1,0 +1,9 @@
+# Secrets - never commit these
+openclaw.json
+
+# Data directories - user-specific
+data/
+
+# OS files
+.DS_Store
+Thumbs.db
