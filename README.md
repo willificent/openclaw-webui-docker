@@ -88,19 +88,27 @@ cp openclaw.json.example openclaw.json
 docker compose up -d
 ```
 
-### 4. Access the UI
+### 4. Access and Select Your Agent
 
-Open http://localhost:3000 in your browser.
+1. Open http://localhost:3000 in your browser.
+2. **Crucial Model Selection:** By default, Open WebUI might not show anything in the chat.
+3. Click the **Model Selector** dropdown at the top center of the chat interface.
+4. Select **`agent:main`** (or `agent:{your-agent-id}`). 
+5. If the dropdown is empty, go to **Settings > Connections** and verify that the OpenAI API URL is `http://openclaw:8080/v1` and the API Key matches your `OPENCLAW_GATEWAY_TOKEN`.
 
-**First-time setup in Open WebUI:**
-1. The connection should auto-configure via environment variables
-2. Click the model selector (top of chat)
-3. Select `agent:main` — this is your configured agent
+---
 
-If you don't see `agent:main` in the model dropdown:
-- Check that the gateway is healthy: `docker compose logs openclaw`
-- Verify the gateway health check passes: `curl http://localhost:18789/healthz`
-- Ensure `WEBUI_AUTH=false` is set in docker-compose.yml (no login required)
+## 🛠️ Step-by-Step UI Verification
+
+If you are a first-time user, follow these exact steps to ensure the "Handshake" is active:
+
+1. **Check the Gateway Logs:** Run `docker compose logs -f openclaw`. Look for `[info] gateway started on port 18789`.
+2. **Verify Connections in Open WebUI:**
+   - Click your profile icon (bottom left) → **Settings**.
+   - Select **Connections**.
+   - Under **OpenAI API**, ensure the status is green.
+   - Click the "Refresh" (recycle) icon next to the URL—it should pull the models and show **`agent:main`** in the list.
+3. **Set the Default:** You can set `agent:main` as your default model in **Settings > General** so it's always ready when you open the lab.
 
 ## Configuration Details
 
