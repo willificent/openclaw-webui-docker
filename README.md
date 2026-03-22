@@ -1,3 +1,5 @@
+# NOTE: This repo is currently under development! Please try it out and reach out if you have any tips to make it functional.
+
 # OpenClaw + Open WebUI Docker Stack
 
 A near-zero-config Docker Compose setup for spinning up an OpenClaw agent with an Open WebUI frontend. Pre-configured for Ollama Cloud API — just add your credentials and go.
