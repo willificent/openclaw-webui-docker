@@ -2,22 +2,20 @@
   "models": {
     "mode": "merge",
     "providers": {
-      "ollama-cloud": {
-        "baseUrl": "https://ollama.com/v1",
-        "apiKey": "{YOUR-OLLAMA-CLOUD-API-KEY}",
+      "openrouter-free": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "YOUR-API-KEY-HERE",
         "api": "openai-completions",
         "models": [
           {
-            "id": "glm-5:cloud",
-            "name": "GLM-5 (Cloud)",
-            "contextWindow": 131072,
-            "reasoning": true
+            "id": "stepfun/step-3.5-flash:free",
+            "name": "Step 3.5 Flash",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ]
           },
-          {
-            "id": "glm-4.7-flash:cloud",
-            "name": "GLM-4.7 Flash (Cloud)",
-            "contextWindow": 32768
-          }
         ]
       }
     }
@@ -25,36 +23,44 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "ollama-cloud/glm-5:cloud"
+        "primary": "openrouter-free/stepfun/step-3.5-flash:free"
       },
-      "workspace": "/data/workspace"
+      "compaction": {
+        "mode": "safeguard"
+      }
     },
     "list": [
       {
         "id": "main",
-        "name": "Generic Agent",
-        "workspace": "/data/workspace"
+        "name": "Generic Agent"
       }
     ]
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
   },
   "gateway": {
     "port": 18789,
     "mode": "local",
     "bind": "lan",
-    "auth": {
-      "mode": "token",
-      "token": "{YOUR-SHARED-SECRET-TOKEN}"
-    },
     "controlUi": {
       "enabled": true,
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ],
       "allowInsecureAuth": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "openaisharedkey"
     },
     "http": {
       "endpoints": {
         "chatCompletions": {
-          "enabled": true
-        },
-        "models": {
           "enabled": true
         }
       }
